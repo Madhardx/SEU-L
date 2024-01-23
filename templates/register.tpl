@@ -8,22 +8,27 @@
             <div class="mb-3">
                 <h2 class="text-center">Załóż konto pracownikowi</h2>
             </div>
-            <form action="index.php">
-            <input type="hidden" name="action" value="processRegister">
+            <form action="reg.php" method="post">
+                <input type="hidden" name="action" value="processRegister">
                 <div class="mb-3 mt-3">
-                    <label for="Login" class="form-label">Login</label>
-                    <input type="text" class="form-control" id="Login" placeholder="Wpisz login">
+                    <label for="login" class="form-label">Login</label>
+                    <input type="text" name="login" class="form-control" id="Login" placeholder="Wpisz login">
                 </div>
-                <div class="mb-3 mt-3"">
-                <label for="Password" class="form-label">Hasło</label>
-                    <input type="text" class="form-control" id="password" placeholder="">
+                <div class="mb-3 mt-3">
+                    <label for="password" class="form-label">Hasło</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="">
                 </div>
-                <div class="mb-3 mt-3"">
-                <label for="Nick" class="form-label">Imię i Naziwsko</label>
-                    <input type="text" class="form-control" id="nick" placeholder="Imię i nazwisko pracownika">
+                <div class="mb-3 mt-3">
+                    <label for="nick" class="form-label">Imię i Naziwsko</label>
+                    <input type="text" name="nick" class="form-control" id="nick" placeholder="Imię i nazwisko pracownika">
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary w-100">Utwórz konto</button>
+                    {if isset($error)}
+                    <div class="alert alert-success" role="alert">
+                        {$error}
+                    </div>
+                    {/if}
                 </div>
             </form>
         </div>
