@@ -9,6 +9,11 @@
         <input type="hidden" name="action" value="gologin">
         <button type="submit" class="btn btn-primary w-100">Zaloguj się</button>
     </div>
+    {if isset($loggedin)}
+        <div class="alert alert-info" role="alert">
+            {$loggedin}
+        </div>
+        {/if}
     </form>
     </div>
 </div>

@@ -28,6 +28,7 @@ if (isset($_REQUEST['action'])) {
             }
             $row = $result->fetch_assoc();
             if (password_verify($_REQUEST['password'], $row['password'])) {
+                $smarty->assign('loggedin', "Poprawnie zalogowano użytkownika");
                 $smarty->display('internal.tpl');
             } else {
                 $smarty->assign('error', "Błędny login lub hasło");

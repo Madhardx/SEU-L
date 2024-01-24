@@ -12,11 +12,11 @@
             <input type="hidden" name="action" value="processLogin">
             <div class=" mb-5 mt-5">
                 <label for="login" class="form-label">Login</label>
-                <input type="text" name="login" class="form-control" id="login" placeholder="Wpisz swój login">
+                <input type="text" name="login" class="form-control" id="login" placeholder="Wpisz swój login" required>
             </div>
             <div class="mb-5 mt-5">
                 <label for="password" class="form-label">Hasło</label>
-                <input type="text" name="login" class="form-control" id="password" placeholder="">
+                <input type="password" name="login" class="form-control" id="password" placeholder="" required>
             </div>
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary w-100">Zaloguj się</button>
