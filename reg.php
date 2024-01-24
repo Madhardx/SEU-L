@@ -24,7 +24,7 @@ if (isset($_REQUEST['action'])) {
                 $smarty->display('register.tpl');
             } else {
                 $query = $db->prepare("INSERT INTO user (id, login, password, nick) VALUES (NULL, ?, ?, ?)");
-                $passwordHash = password_hash($_REQUEST['password'], PASSWORD_ARGON2I);
+                $passwordHash = password_hash($_REQUEST['password'], PASSWORD_DEFAULT);
                 $query->bind_param("sss", $_REQUEST['login'], $passwordHash,  $_REQUEST['nick']);
                 $query->execute();
                 $smarty->assign('sukces', "Poprawnie założono konto pracownika");
