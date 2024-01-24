@@ -64,5 +64,5 @@ if (isset($_REQUEST['action'])) {
             $smarty->display('register.tpl');
     }
 } else {
-    $smarty->display('index.tpl');
+    $smarty->display('internal.tpl');
 }

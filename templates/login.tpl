@@ -16,7 +16,7 @@
             </div>
             <div class="mb-3 mt-3">
                 <label for="password" class="form-label">Hasło</label>
-                <input type="password" name="login" class="form-control" id="password" placeholder="" required>
+                <input type="password" name="password" class="form-control" id="password" placeholder="" required>
             </div>
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary w-100">Zaloguj się</button>
