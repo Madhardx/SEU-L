@@ -15,15 +15,20 @@ if (isset($_REQUEST['action'])) {
             $smarty->display('register.tpl');
             break;
         case 'processRegister':
-            $query = $db->prepare("INSERT INTO user (id, login, password, nick) VALUES (NULL, ?, ?, ?)");
-            $passwordHash = password_hash($_REQUEST['password'], PASSWORD_ARGON2I);
-            $query->bind_param("sss", $_REQUEST['login'], $passwordHash,  $_REQUEST['nick']);
+            $query = $db->prepare("SELECT * FROM user WHERE login = ? LIMIT 1");
+            $query->bind_param("s", $_REQUEST['login']);
             $query->execute();
-            if ($query->errno == 1062) {
-                $smarty->assign('error', "Istnieje już użytkownik o takim loginie");
+            $result = $query->get_result();
+            if ($result->num_rows == 1) {
+                $smarty->assign('blad', "Istnieje już użytkownik o takim loginie");
                 $smarty->display('register.tpl');
             } else {
-                $smarty->display('index.tpl');
+                $query = $db->prepare("INSERT INTO user (id, login, password, nick) VALUES (NULL, ?, ?, ?)");
+                $passwordHash = password_hash($_REQUEST['password'], PASSWORD_ARGON2I);
+                $query->bind_param("sss", $_REQUEST['login'], $passwordHash,  $_REQUEST['nick']);
+                $query->execute();
+                $smarty->assign('sukces', "Poprawnie założono konto pracownika");
+                $smarty->display('register.tpl');
             }
             break;
         default:

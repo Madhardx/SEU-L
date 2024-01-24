@@ -10,12 +10,11 @@ $smarty->setCacheDir('cache');
 $smarty->setConfigDir('configs');
 
 
-
 if (isset($_REQUEST['action'])) {
     switch ($_REQUEST['action']) {
-        case 'gologin':
-            $smarty->display('login.tpl');
-            break;
+            //       case 'login':
+            //         $smarty->display('login.tpl');
+            //          break;
         case 'processLogin':
             $query = $db->prepare("SELECT * FROM user WHERE login = ? LIMIT 1");
             $query->bind_param("s", $_REQUEST['login']);
@@ -36,8 +35,8 @@ if (isset($_REQUEST['action'])) {
             }
             break;
         default:
-            $smarty->display('index.tpl');
+            $smarty->display('login.tpl');
     }
 } else {
-    $smarty->display('index.tpl');
+    $smarty->display('login.tpl');
 }
