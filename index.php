@@ -79,9 +79,51 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
             $smarty->display('klienci.tpl');
             break;
+        case 'processDK':
+            $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
+            $query->bind_param("s", $_REQUEST['dokument']);
+            $query->execute();
+            $result = $query->get_result();
+            if ($result->num_rows == 1) {
+                $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+                $smarty->assign('blad', "Klient posługujący się tym dokumentem istnieje w bazie danych");
+                $smarty->display("klienci.tpl");
+            } else {
+                $query = $db->prepare("INSERT INTO klienci (id, imie, nazwisko, dokument, adres) VALUES (NULL, ?, ?, ?, ?)");
+                $query->bind_param("ssss", $_REQUEST['imie'], $_REQUEST['nazwisko'], $_REQUEST['dokument'], $_REQUEST['adres']);
+                $query->execute();
+                $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+                $smarty->assign('sukces', "Dodano klienta");
+                $smarty->display("klienci.tpl");
+            }
+            break;
         case 'uk':
             $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
             $smarty->display('klienci.tpl');
+            break;
+        case 'processUK':
+            if (password_verify($_REQUEST['adminPass'], $adminPass)) {
+                $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
+                $query->bind_param("s", $_REQUEST['dokument']);
+                $query->execute();
+                $result = $query->get_result();
+                if ($result->num_rows == 0) {
+                    $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
+                    $smarty->assign('blad', "Klient posługujący się tym dokumentem nie istnieje w bazie danych");
+                    $smarty->display("klienci.tpl");
+                } elseif ($result->num_rows == 1) {
+                    $query = $db->prepare("DELETE FROM klienci WHERE dokument =?");
+                    $query->bind_param("s", $_REQUEST['dokument']);
+                    $query->execute();
+                    $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
+                    $smarty->assign('sukces', "Usunięto klienta");
+                    $smarty->display("klienci.tpl");
+                }
+            } else {
+                $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
+                $smarty->assign('blad', "Nie jesteś uprawniony do zakładania konta");
+                $smarty->display('klienci.tpl');
+            }
             break;
         case 'du':
             $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
