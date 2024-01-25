@@ -69,8 +69,20 @@ if (isset($_REQUEST['action'])) {
             session_destroy();
             header('Location: index.php');
             break;
-        default:
-            $smarty->display('register.tpl');
+        case 'umowy':
+            $smarty->display('umowy.tpl');
+            break;
+        case 'klienci':
+            $smarty->display('klienci.tpl');
+            break;
+        case 'dk':
+            break;
+        case 'uk':
+            break;
+        case 'du':
+            break;
+        case 'uu':
+            break;
     }
 } else {
     $smarty->display('index.tpl');
