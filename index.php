@@ -76,12 +76,20 @@ if (isset($_REQUEST['action'])) {
             $smarty->display('klienci.tpl');
             break;
         case 'dk':
+            $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+            $smarty->display('klienci.tpl');
             break;
         case 'uk':
+            $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
+            $smarty->display('klienci.tpl');
             break;
         case 'du':
+            $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
+            $smarty->display('umowy.tpl');
             break;
         case 'uu':
+            $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
+            $smarty->display('umowy.tpl');
             break;
     }
 } else {
