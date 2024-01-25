@@ -36,6 +36,16 @@
             <button type="submit" class="btn btn-outline-danger me-5 w-100">Usuń klienta</button>
         </form>
     </div>
+    <div class="row mt-3 mb-3">
+        <div class="col ">
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Wybierz klienta</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+    </div>
 
     {if isset($dodkl)}
     <div class="row justify-content-evenly-mt5">
