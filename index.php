@@ -79,6 +79,14 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
             $smarty->display('klienci.tpl');
             break;
+        case 'du':
+            $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
+            $smarty->display('umowy.tpl');
+            break;
+        case 'uu':
+            $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
+            $smarty->display('umowy.tpl');
+            break;
         case 'processDK':
             $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
             $query->bind_param("s", $_REQUEST['dokument']);
@@ -89,8 +97,8 @@ if (isset($_REQUEST['action'])) {
                 $smarty->assign('blad', "Klient posługujący się tym dokumentem istnieje w bazie danych");
                 $smarty->display("klienci.tpl");
             } else {
-                $query = $db->prepare("INSERT INTO klienci (id, imie, nazwisko, dokument, adres) VALUES (NULL, ?, ?, ?, ?)");
-                $query->bind_param("ssss", $_REQUEST['imie'], $_REQUEST['nazwisko'], $_REQUEST['dokument'], $_REQUEST['adres']);
+                $query = $db->prepare("INSERT INTO klienci (id, imieNazwisko, dokument, adres, userID) VALUES (NULL, ?, ?, ?, ?)");
+                $query->bind_param("ssss", $_REQUEST['imieNazwisko'], $_REQUEST['dokument'], $_REQUEST['adres'], $_SESSION['nick']);
                 $query->execute();
                 $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
                 $smarty->assign('sukces', "Dodano klienta");
@@ -124,14 +132,6 @@ if (isset($_REQUEST['action'])) {
                 $smarty->assign('blad', "Nie jesteś uprawniony do zakładania konta");
                 $smarty->display('klienci.tpl');
             }
-            break;
-        case 'du':
-            $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
-            $smarty->display('umowy.tpl');
-            break;
-        case 'uu':
-            $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
-            $smarty->display('umowy.tpl');
             break;
     }
 } else {

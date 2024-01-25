@@ -53,12 +53,8 @@
             <div class="col-6">
                 <input type="hidden" name="action" value="processDK">
                 <div class="mb-3 mt-3">
-                    <label for="imie" class="form-label">Imie</label>
-                    <input type="text" name="imie" class="form-control" id="imie" placeholder="Imie" required>
-                </div>
-                <div class="mb-3 mt-3">
-                    <label for="nazwisko" class="form-label">Nazwisko</label>
-                    <input type="text" name="nazwisko" class="form-control" id="Nazwisko" placeholder="Nazwisko" required>
+                    <label for="imieNazwisko" class="form-label">Imie i nazwisko</label>
+                    <input type="text" name="imieNazwisko" class="form-control" id="imieNazwisko" placeholder="Imie i nazwisko" required>
                 </div>
             </div>
             <div class="col-6">

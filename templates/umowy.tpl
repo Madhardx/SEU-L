@@ -66,11 +66,11 @@
                         <div class="mt-4">
                         </div>
                         <div class="mb-3 mt-3">
-                            <label for="adres" class="form-label">Klient</label>
-                            <input type="text" name="adres" class="form-control" id="adres" placeholder="Wybierz klienta" required>
-                            <div class="mt-4">
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">Dodaj umowę</button>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected id="klientID" name="klientID" required> Wybierz klienta </option>
+                                <div class="mt-4">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Dodaj umowę</button>
                         </div>
                     </div>
         </form>
