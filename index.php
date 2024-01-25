@@ -72,13 +72,6 @@ if (isset($_REQUEST['action'])) {
         case 'umowy':
             $smarty->display('umowy.tpl');
             break;
-        case 'klienci':
-            $smarty->display('klienci.tpl');
-            break;
-        case 'dk':
-            $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
-            $smarty->display('klienci.tpl');
-            break;
         case 'du':
             $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
             $smarty->display('umowy.tpl');
@@ -86,6 +79,37 @@ if (isset($_REQUEST['action'])) {
         case 'uu':
             $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
             $smarty->display('umowy.tpl');
+            break;
+        case 'processUU':
+            if (password_verify($_REQUEST['adminPass'], $adminPass)) {
+                $query = $db->prepare("SELECT * FROM umowy WHERE nr =?");
+                $query->bind_param("s", $_REQUEST['nr']);
+                $query->execute();
+                $result = $query->get_result();
+                if ($result->num_rows == 0) {
+                    $smarty->assign('usuum', "Wprowadź poprawne dane klienta");
+                    $smarty->assign('blad', "Umowa o tym numerze nie istnieje w bazie danych");
+                    $smarty->display("umowy.tpl");
+                } elseif ($result->num_rows == 1) {
+                    $query = $db->prepare("DELETE FROM umowy WHERE nr =?");
+                    $query->bind_param("s", $_REQUEST['nr']);
+                    $query->execute();
+                    $smarty->assign('usuum', "Wprowadź poprawne dane klienta");
+                    $smarty->assign('sukces', "Usunięto umowe");
+                    $smarty->display("umowy.tpl");
+                }
+            } else {
+                $smarty->assign('usuum', "Wprowadź poprawne dane klienta");
+                $smarty->assign('blad', "Nie jesteś uprawniony do usuwania umów");
+                $smarty->display('umowy.tpl');
+            }
+            break;
+        case 'klienci':
+            $smarty->display('klienci.tpl');
+            break;
+        case 'dk':
+            $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+            $smarty->display('klienci.tpl');
             break;
         case 'processDK':
             $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
@@ -129,7 +153,7 @@ if (isset($_REQUEST['action'])) {
                 }
             } else {
                 $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
-                $smarty->assign('blad', "Nie jesteś uprawniony do zakładania konta");
+                $smarty->assign('blad', "Nie jesteś uprawniony do usuwania klientów");
                 $smarty->display('klienci.tpl');
             }
             break;

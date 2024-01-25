@@ -90,40 +90,23 @@
                 </div>
                 <div class="mt-4 ms-4  ">
                     <button type="submit" class="btn btn-primary w-100">Usuń umowę</button>
+                    {if isset($blad)}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        {$blad}
+                    </div>
+                    {/if}
+                    {if isset($sukces)}
+                    <div class="alert alert-success mt-3" role="alert">
+                        {$sukces}
+                    </div>
+                    {/if}
                 </div>
             </div>
     </div>
     </form>
-    {if isset($blad)}
-    <div class="alert alert-danger mt-3" role="alert">
-        {$blad}
-    </div>
-    {/if}
-    {if isset($sukces)}
-    <div class="alert alert-success mt-3" role="alert">
-        {$sukces}
-    </div>
-    {/if}
+
 </div>
 </div>
-{else}
-<table class="table">
-    <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-    </tr>
-</table>
 {/if}
 
 
