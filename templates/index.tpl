@@ -13,11 +13,6 @@
         <form action="index.php" method="post">
             <input type="hidden" name="action" value="goregister">
             <button type="submit" class="btn btn-primary w-100">Zarejestruj pracownika</button>
-            {if isset($loggedin)}
-            <div class="alert alert-info" role="alert">
-                {$loggedin}
-            </div>
-            {/if}
             {if isset($sukces)}
             <div class="alert alert-success mt-3" role="alert">
                 {$sukces}

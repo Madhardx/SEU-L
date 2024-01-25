@@ -1,6 +1,6 @@
 <?php
 require_once('Smarty.class.php');
-
+session_start();
 $smarty = new Smarty();
 $db = new mysqli('localhost', 'root', '', 'seul');
 
@@ -9,7 +9,10 @@ $smarty->setCompileDir('templates_c');
 $smarty->setCacheDir('cache');
 $smarty->setConfigDir('configs');
 
-$adminPass = 'admin';
+$adminPass = '$2y$10$QsEgXIX4GdD4XnwT8ksBheSmm2al/2cxz8NxdgQ.NdfRXpu90.mWa'; //zahashowane hasło: admin
+if (isset($_SESSION['nick'])) {
+    $smarty->assign('nick', $_SESSION['nick']);
+}
 
 if (isset($_REQUEST['action'])) {
     switch ($_REQUEST['action']) {
@@ -28,13 +31,15 @@ if (isset($_REQUEST['action'])) {
             }
             $row = $result->fetch_assoc();
             if (password_verify($_REQUEST['password'], $row['password'])) {
-                $smarty->assign('loggedin', "Poprawnie zalogowano użytkownika");
+                $_SESSION['nick'] = $row['nick'];
+                $smarty->assign('nick', $_SESSION['nick']);
                 $smarty->display('internal.tpl');
             } else {
                 $smarty->assign('error', "Błędny login lub hasło");
                 $smarty->display('login.tpl');
                 break;
             }
+
             break;
         case 'goregister':
             $smarty->display('register.tpl');
@@ -44,7 +49,7 @@ if (isset($_REQUEST['action'])) {
             $query->bind_param("s", $_REQUEST['login']);
             $query->execute();
             $result = $query->get_result();
-            if ($_REQUEST['adminPass'] == $adminPass) {
+            if (password_verify($_REQUEST['adminPass'], $adminPass)) {
                 if ($result->num_rows == 1) {
                     $smarty->assign('blad', "Istnieje już użytkownik o takim loginie");
                 } else {
@@ -60,9 +65,13 @@ if (isset($_REQUEST['action'])) {
                 $smarty->display('register.tpl');
             }
             break;
+        case 'logout':
+            session_destroy();
+            header('Location: index.php');
+            break;
         default:
             $smarty->display('register.tpl');
     }
 } else {
-    $smarty->display('internal.tpl');
+    $smarty->display('index.tpl');
 }
