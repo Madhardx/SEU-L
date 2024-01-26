@@ -66,14 +66,24 @@
                         <div class="mt-4">
                         </div>
                         <div class="mb-3 mt-3">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected id="klientID" name="klientID">Wybierz klienta</option>
+                            <select class="form-select" aria-label="Default select example" name="imieNazwisko">
+                                <option selected id="imieNazwisko ">Wybierz klienta</option>
                                 {foreach from=$klienci item=klient}
-                                <option value=" {$klient.id}">{$klient.id} {$klient.imieNazwisko} {$klient.dokument} {$klient.adres} </option>
+                                <option value=" {$klient.imieNazwisko}">{$klient.id} {$klient.imieNazwisko} {$klient.dokument} {$klient.adres} </option>
                                 {/foreach}
                             </select>
                             <div class="mb-3 mt-3">
                                 <button type="submit" class="btn btn-primary w-100">Dodaj umowę</button>
+                                {if isset($blad)}
+                                <div class="alert alert-danger mt-3" role="alert">
+                                    {$blad}
+                                </div>
+                                {/if}
+                                {if isset($sukces)}
+                                <div class="alert alert-success mt-3" role="alert">
+                                    {$sukces}
+                                </div>
+                                {/if}
                             </div>
                         </div>
                     </div>

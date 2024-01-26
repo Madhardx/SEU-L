@@ -13,8 +13,8 @@ $adminPass = '$2y$10$QsEgXIX4GdD4XnwT8ksBheSmm2al/2cxz8NxdgQ.NdfRXpu90.mWa'; //z
 if (isset($_SESSION['nick'])) {
     $smarty->assign('nick', $_SESSION['nick']);
 }
-
 if (isset($_REQUEST['action'])) {
+
     switch ($_REQUEST['action']) {
         case 'gologin':
             $smarty->display('login.tpl');
@@ -32,7 +32,9 @@ if (isset($_REQUEST['action'])) {
             $row = $result->fetch_assoc();
             if (password_verify($_REQUEST['password'], $row['password'])) {
                 $_SESSION['nick'] = $row['nick'];
+                $_SESSION['id'] = $row['id'];
                 $smarty->assign('nick', $_SESSION['nick']);
+                $smarty->assign('id', $_SESSION['id']);
                 $smarty->display('internal.tpl');
             } else {
                 $smarty->assign('error', "Błędny login lub hasło");
@@ -89,15 +91,15 @@ if (isset($_REQUEST['action'])) {
             $query->execute();
             $result = $query->get_result();
             if ($result->num_rows == 1) {
-                $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+                $smarty->assign('dodum', "Wprowadź poprawne dane klienta");
                 $smarty->assign('blad', "Istnieje już umowa o tym numerze");
                 $smarty->display("umowy.tpl");
             } else {
                 $query = $db->prepare("INSERT INTO umowy (id, Nr, DataZ, Okres, Przedmiot, wartosc, userID, klientID) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)");
-                $query->bind_param("sssssss", $_REQUEST['Nr'], $_REQUEST['DataZ'], $_REQUEST['Okres'], $_REQUEST['Przedmiot'], $_REQUEST['wartosc'], $_SESSION['nick'], $_REQUEST['klientID']);
+                $query->bind_param("sssssss", $_REQUEST['Nr'], $_REQUEST['DataZ'], $_REQUEST['Okres'], $_REQUEST['Przedmiot'], $_REQUEST['wartosc'], $_SESSION['nick'], $_REQUEST['imieNazwisko']);
                 $query->execute();
-                $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
-                $smarty->assign('sukces', "Dodano klienta");
+                $smarty->assign('dodum', "Wprowadź poprawne dane klienta");
+                $smarty->assign('sukces', "Dodano umowę");
                 $smarty->display("umowy.tpl");
             }
             break;
@@ -120,7 +122,7 @@ if (isset($_REQUEST['action'])) {
                     $query->bind_param("s", $_REQUEST['nr']);
                     $query->execute();
                     $smarty->assign('usuum', "Wprowadź poprawne dane klienta");
-                    $smarty->assign('sukces', "Usunięto umowe");
+                    $smarty->assign('sukces', "Usunięto umowę");
                     $smarty->display("umowy.tpl");
                 }
             } else {
@@ -141,7 +143,6 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('klienci', $klienci);
 
             $smarty->display('klienci.tpl');
-            var_dump($klienci);
             break;
 
         case 'dk':
