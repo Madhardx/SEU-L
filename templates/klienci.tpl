@@ -38,17 +38,18 @@
     </div>
     <div class="row mt-3 mb-3">
         <div class="col ">
+            {if isset($klienci)}
             <select class="form-select" aria-label="Default select example">
                 <option selected>Wybierz klienta</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {foreach from=$klienci item=klient}
+                <option value="{$klient.id}">{$klient.id} {$klient.imieNazwisko} {$klient.dokument} {$klient.adres} </option>
+                {/foreach}
+                {/if}
             </select>
         </div>
     </div>
-
     {if isset($dodkl)}
-    <div class="row justify-content-evenly-mt5">
+    <div class=" row justify-content-evenly-mt5">
         <form action="index.php" method="post">
             <div class="col-6">
                 <input type="hidden" name="action" value="processDK">

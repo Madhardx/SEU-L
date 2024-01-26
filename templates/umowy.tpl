@@ -42,12 +42,12 @@
             <div class="col-6">
                 <input type="hidden" name="action" value="processDU">
                 <div class="mb-3 mt-3">
-                    <label for="nr" class="form-label">Nr umowy</label>
-                    <input type="text" name="nr" class="form-control" id="nr" placeholder="Nr umowy" required>
+                    <label for="Nr" class="form-label">Nr umowy</label>
+                    <input type="text" name="Nr" class="form-control" id="Nr" placeholder="NR/MM/RRRR" required>
                 </div>
                 <div class="mb-3 mt-3">
-                    <label for="dataz" class="form-label">Data zawarcia</label>
-                    <input type="date" name="dataz" class="form-control" id="dataz" placeholder="Data zawarcia" required>
+                    <label for="DataZ" class="form-label">Data zawarcia</label>
+                    <input type="date" name="DataZ" class="form-control" id="DataZ" placeholder="Data zawarcia" required>
                 </div>
             </div>
             <div class="col-6">
@@ -67,10 +67,14 @@
                         </div>
                         <div class="mb-3 mt-3">
                             <select class="form-select" aria-label="Default select example">
-                                <option selected id="klientID" name="klientID" required> Wybierz klienta </option>
-                                <div class="mt-4">
-                                </div>
+                                <option selected id="klientID" name="klientID">Wybierz klienta</option>
+                                {foreach from=$klienci item=klient}
+                                <option value=" {$klient.id}">{$klient.id} {$klient.imieNazwisko} {$klient.dokument} {$klient.adres} </option>
+                                {/foreach}
+                            </select>
+                            <div class="mb-3 mt-3">
                                 <button type="submit" class="btn btn-primary w-100">Dodaj umowę</button>
+                            </div>
                         </div>
                     </div>
         </form>

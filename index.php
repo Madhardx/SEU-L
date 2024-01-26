@@ -39,7 +39,6 @@ if (isset($_REQUEST['action'])) {
                 $smarty->display('login.tpl');
                 break;
             }
-
             break;
         case 'goregister':
             $smarty->display('register.tpl');
@@ -74,7 +73,33 @@ if (isset($_REQUEST['action'])) {
             break;
         case 'du':
             $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
+            $query = $db->prepare("SELECT * FROM klienci");
+            $query->execute();
+            $result = $query->get_result();
+            $klienci = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($klienci, $row);
+            }
+            $smarty->assign('klienci', $klienci);
             $smarty->display('umowy.tpl');
+            break;
+        case 'processDU':
+            $query = $db->prepare("SELECT * FROM umowy WHERE Nr =?");
+            $query->bind_param("s", $_REQUEST['Nr']);
+            $query->execute();
+            $result = $query->get_result();
+            if ($result->num_rows == 1) {
+                $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+                $smarty->assign('blad', "Istnieje już umowa o tym numerze");
+                $smarty->display("umowy.tpl");
+            } else {
+                $query = $db->prepare("INSERT INTO umowy (id, Nr, DataZ, Okres, Przedmiot, wartosc, userID, klientID) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)");
+                $query->bind_param("sssssss", $_REQUEST['Nr'], $_REQUEST['DataZ'], $_REQUEST['Okres'], $_REQUEST['Przedmiot'], $_REQUEST['wartosc'], $_SESSION['nick'], $_REQUEST['klientID']);
+                $query->execute();
+                $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
+                $smarty->assign('sukces', "Dodano klienta");
+                $smarty->display("umowy.tpl");
+            }
             break;
         case 'uu':
             $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
@@ -105,8 +130,20 @@ if (isset($_REQUEST['action'])) {
             }
             break;
         case 'klienci':
+            $query = $db->prepare("SELECT * FROM klienci");
+            $query->execute();
+            $result = $query->get_result();
+
+            $klienci = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($klienci, $row);
+            }
+            $smarty->assign('klienci', $klienci);
+
             $smarty->display('klienci.tpl');
+            var_dump($klienci);
             break;
+
         case 'dk':
             $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
             $smarty->display('klienci.tpl');
