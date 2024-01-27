@@ -37,49 +37,6 @@
         </form>
     </div>
 </div>
-<!--Wybieranie szczególów klienta-->
-<div class="row mt-3 ">
-    <div class="col ">
-        <form action="index.php" method="post">
-            <select class="form-select" aria-label="Default select example" name="action" value="id">
-                <option selected id="id">Wybierz klienta</option>
-                {foreach from=$klienci item=klient}
-                <option value=" {$klient.id}"> {$klient.imieNazwisko} {$klient.dokument} </option>
-                {/foreach}
-            </select>
-    </div>
-    <div class="col">
-        <input type="hidden" name="action" value="wsk">
-        <button type="submit" class="btn btn-outline-info me-5  w-100">Wyświetl szczegóły klienta</button>
-    </div>
-    </form>
-</div>
-<!--Tabela klientów-->
-<div class="row mt-3 mb-3">
-    <div class="col">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Imię i nazwisko</th>
-                    <th scope="col">Dokument</th>
-                    <th scope="col">Adres</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {foreach from=$klienci item=klient}
-                <tr>
-                    <th scope="row">{$lp}</th>
-                    <td>{$klient.imieNazwisko}</td>
-                    <td>{$klient.dokument}</td>
-                    <td>{$klient.adres}</td>
-                </tr>
-                {$lp = $lp+1}
-                {/foreach}
-            </tbody>
-        </table>
-    </div>
-</div>
 <!--Dodawanie klienta-->
 {if isset($dodkl)}
 <div class=" row justify-content-evenly-mt5">

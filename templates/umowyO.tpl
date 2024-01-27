@@ -36,46 +36,6 @@
         </form>
     </div>
 </div>
-<div class="row mt-3 mb-3">
-    <div class="col ">
-
-        {if isset($umowy)}
-        <select class="form-select" aria-label="Default select example">
-            <option selected>Wybierz umowę</option>
-            {foreach from=$umowy item=umowa}
-            <option value="{$umowa.id}">{$umowa.Nr} </option>
-            {/foreach}
-            {/if}
-        </select>
-    </div>
-</div>
-<div class="row mt-3 mb-3">
-    <div class="col">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nr</th>
-                    <th scope="col">Ważna do</th>
-                    <th scope="col">Przedmiot</th>
-                    <th scope="col">Dodano przez</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {foreach from=$umowy item=umowa}
-                <tr>
-                    <th scope="row">{$lp}</th>
-                    <td>{$umowa.Nr}</td>
-                    <td>{$umowa.Okres}</td>
-                    <td>{$umowa.Przedmiot}</td>
-                    <td>{$umowa.userID}</td>
-                </tr>
-                {$lp = $lp+1}
-                {/foreach}
-            </tbody>
-        </table>
-    </div>
-</div>
 {if isset($dodum)}
 <div class="row justify-content-evenly-mt5">
     <form action="index.php" method="post">

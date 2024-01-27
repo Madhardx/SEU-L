@@ -71,6 +71,16 @@ if (isset($_REQUEST['action'])) {
             header('Location: index.php');
             break;
         case 'umowy':
+            $query = $db->prepare("SELECT * FROM umowy");
+            $query->execute();
+            $result = $query->get_result();
+            $umowy = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($umowy, $row);
+            }
+            $lp = 1;
+            $smarty->assign('lp', $lp);
+            $smarty->assign('umowy', $umowy);
             $smarty->display('umowy.tpl');
             break;
         case 'du':
@@ -83,7 +93,7 @@ if (isset($_REQUEST['action'])) {
                 array_push($klienci, $row);
             }
             $smarty->assign('klienci', $klienci);
-            $smarty->display('umowy.tpl');
+            $smarty->display('umowyO.tpl');
             break;
         case 'processDU':
             $query = $db->prepare("SELECT * FROM umowy WHERE Nr =?");
@@ -100,12 +110,12 @@ if (isset($_REQUEST['action'])) {
                 $query->execute();
                 $smarty->assign('dodum', "Wprowadź poprawne dane klienta");
                 $smarty->assign('sukces', "Dodano umowę");
-                $smarty->display("umowy.tpl");
+                $smarty->display("umowyO.tpl");
             }
             break;
         case 'uu':
             $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
-            $smarty->display('umowy.tpl');
+            $smarty->display('umowyO.tpl');
             break;
         case 'processUU':
             if (password_verify($_REQUEST['adminPass'], $adminPass)) {
@@ -128,7 +138,7 @@ if (isset($_REQUEST['action'])) {
             } else {
                 $smarty->assign('usuum', "Wprowadź poprawne dane klienta");
                 $smarty->assign('blad', "Nie jesteś uprawniony do usuwania umów");
-                $smarty->display('umowy.tpl');
+                $smarty->display('umowyO.tpl');
             }
             break;
         case 'klienci':
@@ -140,14 +150,36 @@ if (isset($_REQUEST['action'])) {
             while ($row = $result->fetch_assoc()) {
                 array_push($klienci, $row);
             }
+            $lp = 1;
+            $smarty->assign('lp', $lp);
             $smarty->assign('klienci', $klienci);
-
             $smarty->display('klienci.tpl');
             break;
+        case 'wsk':
+            $query = $db->prepare("SELECT * FROM klienci");
+            $query->execute();
+            $result = $query->get_result();
+            $klienci = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($klienci, $row);
+            }
+            $lp = 1;
+            $smarty->assign('lp', $lp);
+            $smarty->assign('klienci', $klienci);
 
+            $query = $db->prepare("SELECT * FROM klienci WHERE imieNazwisko=?");
+            $query->bind_param("s", $_REQUEST['id']);
+            $query->execute();
+            $result = $query->get_result();
+            $SK = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($SK, $row);
+            }
+            $smarty->display('klientinfo.tpl');
+            break;
         case 'dk':
             $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
-            $smarty->display('klienci.tpl');
+            $smarty->display('klienciO.tpl');
             break;
         case 'processDK':
             $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
@@ -164,12 +196,12 @@ if (isset($_REQUEST['action'])) {
                 $query->execute();
                 $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
                 $smarty->assign('sukces', "Dodano klienta");
-                $smarty->display("klienci.tpl");
+                $smarty->display("klienciO.tpl");
             }
             break;
         case 'uk':
             $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
-            $smarty->display('klienci.tpl');
+            $smarty->display('klienciO.tpl');
             break;
         case 'processUK':
             if (password_verify($_REQUEST['adminPass'], $adminPass)) {
@@ -187,7 +219,7 @@ if (isset($_REQUEST['action'])) {
                     $query->execute();
                     $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
                     $smarty->assign('sukces', "Usunięto klienta");
-                    $smarty->display("klienci.tpl");
+                    $smarty->display("klienciO.tpl");
                 }
             } else {
                 $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
