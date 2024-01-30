@@ -1,7 +1,10 @@
 <?php
 require_once('Smarty.class.php');
 session_start();
+global $smarty;
 $smarty = new Smarty();
+
+global $db;
 $db = new mysqli('localhost', 'root', '', 'seul');
 
 $smarty->setTemplateDir('templates');
@@ -10,6 +13,34 @@ $smarty->setCacheDir('cache');
 $smarty->setConfigDir('configs');
 
 $adminPass = '$2y$10$QsEgXIX4GdD4XnwT8ksBheSmm2al/2cxz8NxdgQ.NdfRXpu90.mWa'; //zahashowane hasło: admin
+
+//FUNKCJE
+function listaKlientow()
+{
+    $query = $GLOBALS['db']->prepare("SELECT * FROM klienci");
+    $query->execute();
+    $result = $query->get_result();
+    $klienci = array();
+    while ($row = $result->fetch_assoc()) {
+        array_push($klienci, $row);
+    }
+    $lp = 1;
+    $GLOBALS['smarty']->assign('lp', $lp);
+    $GLOBALS['smarty']->assign('klienci', $klienci);
+}
+function listaUmow()
+{
+    $query = $GLOBALS['db']->prepare("SELECT * FROM umowy");
+    $query->execute();
+    $result = $query->get_result();
+    $umowy = array();
+    while ($row = $result->fetch_assoc()) {
+        array_push($umowy, $row);
+    }
+    $lp = 1;
+    $GLOBALS['smarty']->assign('lp', $lp);
+    $GLOBALS['smarty']->assign('umowy', $umowy);
+}
 if (isset($_SESSION['nick'])) {
     $smarty->assign('nick', $_SESSION['nick']);
 }
@@ -71,30 +102,12 @@ if (isset($_REQUEST['action'])) {
             header('Location: index.php');
             break;
         case 'umowy': //przejscie do listy umów
-            $query = $db->prepare("SELECT * FROM umowy");
-            $query->execute();
-            $result = $query->get_result();
-            $umowy = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($umowy, $row);
-            }
-            $lp = 1;
-            $smarty->assign('lp', $lp);
-            $smarty->assign('umowy', $umowy);
+            listaUmow();
             $smarty->display('umowy.tpl');
             break;
         case 'wsu':
             //wybieranie listy umów
-            $query = $db->prepare("SELECT * FROM umowy");
-            $query->execute();
-            $result = $query->get_result();
-            $umowy = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($umowy, $row);
-            }
-            $lp = 1;
-            $smarty->assign('lp', $lp);
-            $smarty->assign('umowy', $umowy);
+            listaUmow();
             //Dane ogólne umowy
             $query = $db->prepare("SELECT * FROM umowy where Nr= ? ");
             $query->bind_param("s", $_REQUEST['Nr']);
@@ -109,14 +122,7 @@ if (isset($_REQUEST['action'])) {
             break;
         case 'du':
             $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
-            $query = $db->prepare("SELECT * FROM klienci");
-            $query->execute();
-            $result = $query->get_result();
-            $klienci = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($klienci, $row);
-            }
-            $smarty->assign('klienci', $klienci);
+            listaKlientow();
             $smarty->display('umowyO.tpl');
             break;
         case 'processDU': //dodawanie umowy
@@ -127,7 +133,7 @@ if (isset($_REQUEST['action'])) {
             if ($result->num_rows == 1) {
                 $smarty->assign('dodum', "Wprowadź poprawne dane klienta");
                 $smarty->assign('blad', "Istnieje już umowa o tym numerze");
-                $smarty->display("umowy.tpl");
+                $smarty->display("umowyO.tpl");
             } else {
                 $query = $db->prepare("INSERT INTO umowy (id, Nr, DataZ, Okres, Przedmiot, wartosc, userID, klientID) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)");
                 $query->bind_param("sssssss", $_REQUEST['Nr'], $_REQUEST['DataZ'], $_REQUEST['Okres'], $_REQUEST['Przedmiot'], $_REQUEST['wartosc'], $_SESSION['nick'], $_REQUEST['dokument']);
@@ -166,17 +172,7 @@ if (isset($_REQUEST['action'])) {
             }
             break;
         case 'klienci': // lista klientów
-            $query = $db->prepare("SELECT * FROM klienci");
-            $query->execute();
-            $result = $query->get_result();
-
-            $klienci = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($klienci, $row);
-            }
-            $lp = 1;
-            $smarty->assign('lp', $lp);
-            $smarty->assign('klienci', $klienci);
+            listaKlientow();
             $smarty->display('klienci.tpl');
             break;
         case 'wsk':
@@ -201,16 +197,7 @@ if (isset($_REQUEST['action'])) {
             }
             $smarty->assign('zawarteUmowy', $zawarteUmowy);
             //wybór klienta
-            $query = $db->prepare("SELECT * FROM klienci");
-            $query->execute();
-            $result = $query->get_result();
-            $klienci = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($klienci, $row);
-            }
-            $lp = 1;
-            $smarty->assign('lp', $lp);
-            $smarty->assign('klienci', $klienci);
+            listaKlientow();
             $smarty->display('klientinfo.tpl');
             break;
         case 'dk':
@@ -225,7 +212,7 @@ if (isset($_REQUEST['action'])) {
             if ($result->num_rows == 1) {
                 $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
                 $smarty->assign('blad', "Klient posługujący się tym dokumentem istnieje w bazie danych");
-                $smarty->display("klienci.tpl");
+                $smarty->display("klienciO.tpl");
             } else {
                 $query = $db->prepare("INSERT INTO klienci (id, imieNazwisko, dokument, adres, userID) VALUES (NULL, ?, ?, ?, ?)");
                 $query->bind_param("ssss", $_REQUEST['imieNazwisko'], $_REQUEST['dokument'], $_REQUEST['adres'], $_SESSION['nick']);
@@ -248,7 +235,7 @@ if (isset($_REQUEST['action'])) {
                 if ($result->num_rows == 0) {
                     $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
                     $smarty->assign('blad', "Klient posługujący się tym dokumentem nie istnieje w bazie danych");
-                    $smarty->display("klienci.tpl");
+                    $smarty->display("klienciO.tpl");
                 } elseif ($result->num_rows == 1) {
                     $query = $db->prepare("DELETE FROM klienci WHERE dokument =?");
                     $query->bind_param("s", $_REQUEST['dokument']);
@@ -260,7 +247,7 @@ if (isset($_REQUEST['action'])) {
             } else {
                 $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
                 $smarty->assign('blad', "Nie jesteś uprawniony do usuwania klientów");
-                $smarty->display('klienci.tpl');
+                $smarty->display('klienciO.tpl');
             }
             break;
     }
