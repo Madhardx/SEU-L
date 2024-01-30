@@ -36,6 +36,7 @@
         </form>
     </div>
 </div>
+<!--Wybieranie szczególów umowy-->
 <div class="row mt-3 ">
     <div class="col ">
         <form action="index.php" method="post">
@@ -52,32 +53,38 @@
     </div>
 </div>
 </form>
-<div class="row mt-3 mb-3">
-    <div class="col">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nr</th>
-                    <th scope="col">Ważna do</th>
-                    <th scope="col">Przedmiot</th>
-                    <th scope="col">Dodano przez</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {foreach from=$umowy item=umowa}
-                <tr>
-                    <th scope="row">{$lp}</th>
-                    <td>{$umowa.Nr}</td>
-                    <td>{$umowa.Okres}</td>
-                    <td>{$umowa.Przedmiot}</td>
-                    <td>{$umowa.userID}</td>
-                </tr>
-                {$lp = $lp+1}
-                {/foreach}
-            </tbody>
-        </table>
+<!--Wyświetlanie szczególów umowy-->
+{foreach from=$wsu item=wul}
+
+{/foreach}
+<div class="row mt-3">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Nr umowy:</span>
+        <input type="text" readonly class="form-control" value="{$wul.Nr}" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Data zawarcia:</span>
+        <input type="text" readonly class="form-control" value="{$wul.DataZ}" aria-label="Dokument" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Data wygaśnięcia:</span>
+        <input type="text" readonly class="form-control" value="{$wul.Okres}" aria-label="Adres" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Przedmiot umowy:</span>
+        <input type="text" readonly class="form-control" value="{$wul.Przedmiot}" aria-label="dodany przez" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Wartość:</span>
+        <input type="text" readonly class="form-control" value="{$wul.wartosc}" aria-label="dodany przez" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Zawarta z:</span>
+        <input type="text" readonly class="form-control" value="{$wul.klientID}" aria-label="dodany przez" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Zawarta przez:</span>
+        <input type="text" readonly class="form-control" value="{$wul.userID}" aria-label="dodany przez" aria-describedby="basic-addon1">
     </div>
 </div>
-
 {include file="foot.tpl"}

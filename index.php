@@ -83,6 +83,30 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('umowy', $umowy);
             $smarty->display('umowy.tpl');
             break;
+        case 'wsu':
+            //wybieranie listy umów
+            $query = $db->prepare("SELECT * FROM umowy");
+            $query->execute();
+            $result = $query->get_result();
+            $umowy = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($umowy, $row);
+            }
+            $lp = 1;
+            $smarty->assign('lp', $lp);
+            $smarty->assign('umowy', $umowy);
+            //Dane ogólne umowy
+            $query = $db->prepare("SELECT * FROM umowy where Nr= ? ");
+            $query->bind_param("s", $_REQUEST['Nr']);
+            $query->execute();
+            $result = $query->get_result();
+            $wsu = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($wsu, $row);
+            }
+            $smarty->assign('wsu', $wsu);
+            $smarty->display('umowyInfo.tpl');
+            break;
         case 'du':
             $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
             $query = $db->prepare("SELECT * FROM klienci");
