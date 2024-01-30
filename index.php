@@ -164,6 +164,7 @@ if (isset($_REQUEST['action'])) {
             while ($row = $result->fetch_assoc()) {
                 array_push($wsk, $row);
             }
+            $smarty->assign('wsk', $wsk);
             $query = $db->prepare("SELECT * FROM klienci");
             $query->execute();
             $result = $query->get_result();
@@ -174,9 +175,6 @@ if (isset($_REQUEST['action'])) {
             $lp = 1;
             $smarty->assign('lp', $lp);
             $smarty->assign('klienci', $klienci);
-
-
-            var_dump($wsk);
             $smarty->display('klientinfo.tpl');
             break;
         case 'dk':
