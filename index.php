@@ -156,6 +156,7 @@ if (isset($_REQUEST['action'])) {
             $smarty->display('klienci.tpl');
             break;
         case 'wsk':
+            //Dane ogólne klienta
             $query = $db->prepare("SELECT * FROM klienci where dokument= ? ");
             $query->bind_param("s", $_REQUEST['dokument']);
             $query->execute();
@@ -165,6 +166,17 @@ if (isset($_REQUEST['action'])) {
                 array_push($wsk, $row);
             }
             $smarty->assign('wsk', $wsk);
+            //zawarte umowy
+            $query = $db->prepare("SELECT * FROM umowy where klientID= ? ");
+            $query->bind_param("s", $_REQUEST['dokument']);
+            $query->execute();
+            $result = $query->get_result();
+            $zawarteUmowy = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($zawarteUmowy, $row);
+            }
+            $smarty->assign('zawarteUmowy', $zawarteUmowy);
+            //wybór klienta
             $query = $db->prepare("SELECT * FROM klienci");
             $query->execute();
             $result = $query->get_result();

@@ -41,13 +41,13 @@
 <div class="row mt-3 ">
     <div class="col ">
         <form action="index.php" method="post">
-        <input type="hidden" name="action" value="wsk">
-        <select class="form-select" aria-label="Default select example" name="dokument">
-        <option selected id="dokument">Wybierz klienta</option>
-        {foreach from=$klienci item=klient}
-        <option value="{$klient.dokument}">{$klient.dokument} {$klient.imieNazwisko} </option>
-        {/foreach}
-    </select>
+            <input type="hidden" name="action" value="wsk">
+            <select class="form-select" aria-label="Default select example" name="dokument">
+                <option selected id="dokument">Wybierz klienta</option>
+                {foreach from=$klienci item=klient}
+                <option value="{$klient.dokument}">{$klient.dokument} {$klient.imieNazwisko} </option>
+                {/foreach}
+            </select>
     </div>
     <div class="col">
         <button type="submit" class="btn btn-outline-info me-5  w-100">Wyświetl szczegóły klienta</button>
@@ -60,7 +60,7 @@
 {foreach from=$wsk item=wkl}
 
 {/foreach}
-<div class="row mt-3">  
+<div class="row mt-3">
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Imie i nazwisko</span>
         <input type="text" readonly class="form-control" value="{$wkl.imieNazwisko}" aria-label="Username" aria-describedby="basic-addon1">
@@ -79,9 +79,7 @@
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Zawarte umowy: </span>
-        <input type="text" readonly class="form-control" value="{$wkl.imieNazwisko}" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="text" readonly class="form-control" value="{foreach from=$zawarteUmowy item=umowy}  {$umowy.Nr} {/foreach}" aria-label="Username" aria-describedby="basic-addon1">
     </div>
-
-
-
-    {include file="foot.tpl"}
+</div>
+{include file="foot.tpl"}
