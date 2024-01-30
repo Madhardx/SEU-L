@@ -52,8 +52,8 @@
         </div>
         <div class="col-6">
             <div class="mb-3 mt-3">
-                <label for="Okres" class="form-label">Okres</label>
-                <input type="text" name="Okres" class="form-control" id="Okres" placeholder="Okres" required>
+                <label for="Okres" class="form-label">Data wygaśnięcia</label>
+                <input type="date" name="Okres" class="form-control" id="Okres" placeholder="Okres" required>
             </div>
             <div class="mb-3 mt-3">
                 <label for="Przedmiot" class="form-label">Przedmiot</label>
@@ -64,10 +64,10 @@
                 <input type="text" name="wartosc" class="form-control" id="wartosc" placeholder="Wartość w zł" required>
             </div>
             <div class="mb-3 mt-3">
-                <select class="form-select" aria-label="Default select example" name="imieNazwisko">
-                    <option selected id="imieNazwisko ">Wybierz klienta</option>
+                <select class="form-select" aria-label="Default select example" name="dokument">
+                    <option selected id="dokument">Wybierz klienta</option>
                     {foreach from=$klienci item=klient}
-                    <option value=" {$klient.imieNazwisko}">{$klient.dokument} {$klient.imieNazwisko} </option>
+                    <option value="{$klient.dokument}">{$klient.dokument} {$klient.imieNazwisko} </option>
                     {/foreach}
                 </select>
             </div>

@@ -106,7 +106,7 @@ if (isset($_REQUEST['action'])) {
                 $smarty->display("umowy.tpl");
             } else {
                 $query = $db->prepare("INSERT INTO umowy (id, Nr, DataZ, Okres, Przedmiot, wartosc, userID, klientID) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)");
-                $query->bind_param("sssssss", $_REQUEST['Nr'], $_REQUEST['DataZ'], $_REQUEST['Okres'], $_REQUEST['Przedmiot'], $_REQUEST['wartosc'], $_SESSION['nick'], $_REQUEST['imieNazwisko']);
+                $query->bind_param("sssssss", $_REQUEST['Nr'], $_REQUEST['DataZ'], $_REQUEST['Okres'], $_REQUEST['Przedmiot'], $_REQUEST['wartosc'], $_SESSION['nick'], $_REQUEST['dokument']);
                 $query->execute();
                 $smarty->assign('dodum', "Wprowadź poprawne dane klienta");
                 $smarty->assign('sukces', "Dodano umowę");
@@ -156,6 +156,14 @@ if (isset($_REQUEST['action'])) {
             $smarty->display('klienci.tpl');
             break;
         case 'wsk':
+            $query = $db->prepare("SELECT * FROM klienci where dokument= ? ");
+            $query->bind_param("s", $_REQUEST['dokument']);
+            $query->execute();
+            $result = $query->get_result();
+            $wsk = array();
+            while ($row = $result->fetch_assoc()) {
+                array_push($wsk, $row);
+            }
             $query = $db->prepare("SELECT * FROM klienci");
             $query->execute();
             $result = $query->get_result();
@@ -167,14 +175,8 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('lp', $lp);
             $smarty->assign('klienci', $klienci);
 
-            $query = $db->prepare("SELECT * FROM klienci WHERE imieNazwisko=?");
-            $query->bind_param("s", $_REQUEST['id']);
-            $query->execute();
-            $result = $query->get_result();
-            $SK = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($SK, $row);
-            }
+
+            var_dump($wsk);
             $smarty->display('klientinfo.tpl');
             break;
         case 'dk':

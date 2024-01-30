@@ -41,24 +41,26 @@
 <div class="row mt-3 ">
     <div class="col ">
         <form action="index.php" method="post">
-            <select class="form-select" aria-label="Default select example" name="action" value="imieNazwisko">
-                <option selected id="imieNazwisko">Wybierz klienta</option>
-                {foreach from=$klienci item=klient}
-                <option value="$klient.imieNazwisko"> {$klient.imieNazwisko} {$klient.dokument} </option>
-                {/foreach}
-            </select>
+        <input type="hidden" name="action" value="wsk">
+        <select class="form-select" aria-label="Default select example" name="dokument">
+        <option selected id="dokument">Wybierz klienta</option>
+        {foreach from=$klienci item=klient}
+        <option value="{$klient.dokument}">{$klient.dokument} {$klient.imieNazwisko} </option>
+        {/foreach}
+    </select>
     </div>
     <div class="col">
-        <input type="hidden" name="action" value="wsk">
         <button type="submit" class="btn btn-outline-info me-5  w-100">Wyświetl szczegóły klienta</button>
     </div>
-    </form>
 </div>
+</form>
+
 <!--Wyświetlanie szczególów klienta-->
 <div class="row mt-3">
+
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Imie i nazwisko</span>
-        <input type="text" readonly class="form-control" value="{$SK.imieNazwisko}" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="text" readonly class="form-control" value="{$wsk.imieNazwisko}" aria-label="Username" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Dokument</span>
