@@ -19,7 +19,7 @@ if (isset($_REQUEST['action'])) {
         case 'gologin':
             $smarty->display('login.tpl');
             break;
-        case 'processLogin':
+        case 'processLogin': //logowanie się
             $query = $db->prepare("SELECT * FROM user WHERE login = ?");
             $query->bind_param("s", $_REQUEST['login']);
             $query->execute();
@@ -45,7 +45,7 @@ if (isset($_REQUEST['action'])) {
         case 'goregister':
             $smarty->display('register.tpl');
             break;
-        case 'processRegister':
+        case 'processRegister': // zakładanie konta dla pracownika
             $query = $db->prepare("SELECT * FROM user WHERE login = ? LIMIT 1");
             $query->bind_param("s", $_REQUEST['login']);
             $query->execute();
@@ -70,7 +70,7 @@ if (isset($_REQUEST['action'])) {
             session_destroy();
             header('Location: index.php');
             break;
-        case 'umowy':
+        case 'umowy': //przejscie do listy umów
             $query = $db->prepare("SELECT * FROM umowy");
             $query->execute();
             $result = $query->get_result();
@@ -119,7 +119,7 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('klienci', $klienci);
             $smarty->display('umowyO.tpl');
             break;
-        case 'processDU':
+        case 'processDU': //dodawanie umowy
             $query = $db->prepare("SELECT * FROM umowy WHERE Nr =?");
             $query->bind_param("s", $_REQUEST['Nr']);
             $query->execute();
@@ -141,7 +141,7 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('usuum', "Wprowadź poprawne dane umowy");
             $smarty->display('umowyO.tpl');
             break;
-        case 'processUU':
+        case 'processUU': //usuwanie umowy
             if (password_verify($_REQUEST['adminPass'], $adminPass)) {
                 $query = $db->prepare("SELECT * FROM umowy WHERE nr =?");
                 $query->bind_param("s", $_REQUEST['nr']);
@@ -165,7 +165,7 @@ if (isset($_REQUEST['action'])) {
                 $smarty->display('umowyO.tpl');
             }
             break;
-        case 'klienci':
+        case 'klienci': // lista klientów
             $query = $db->prepare("SELECT * FROM klienci");
             $query->execute();
             $result = $query->get_result();
@@ -217,7 +217,7 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('dodkl', "Wprowadź poprawne dane klienta");
             $smarty->display('klienciO.tpl');
             break;
-        case 'processDK':
+        case 'processDK': //dodwanie klienta
             $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
             $query->bind_param("s", $_REQUEST['dokument']);
             $query->execute();
@@ -239,7 +239,7 @@ if (isset($_REQUEST['action'])) {
             $smarty->assign('usukl', "Wprowadź poprawne dane klienta");
             $smarty->display('klienciO.tpl');
             break;
-        case 'processUK':
+        case 'processUK': // usuwanie klienta
             if (password_verify($_REQUEST['adminPass'], $adminPass)) {
                 $query = $db->prepare("SELECT * FROM klienci WHERE dokument =?");
                 $query->bind_param("s", $_REQUEST['dokument']);
