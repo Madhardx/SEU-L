@@ -30,7 +30,7 @@ function listaKlientow()
 }
 function listaUmow()
 {
-    $query = $GLOBALS['db']->prepare("SELECT * FROM umowy");
+    $query = $GLOBALS['db']->prepare("SELECT * FROM umowy ORDER BY Okres ASC");
     $query->execute();
     $result = $query->get_result();
     $umowy = array();
