@@ -13,4 +13,10 @@
         <button type="submit" class="btn btn-outline-info me-5  w-100">Wyświetl szczegóły umowy</button>
     </div>
 </div>
+{if isset($blad)}
+    <div class="alert alert-danger mt-3" role="alert">
+        {$blad}
+    </div>
+    {/if}
+    
 </form>

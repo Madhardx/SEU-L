@@ -114,12 +114,19 @@ if (isset($_REQUEST['action'])) {
             $query->execute();
             $result = $query->get_result();
             $wsu = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($wsu, $row);
+            if ($result->num_rows == 0) {
+                listaKlientow();
+                $smarty->assign('blad', "Nie wybrano umowy");
+                $smarty->display('umowy.tpl');
+                break;
+            } else {
+                while ($row = $result->fetch_assoc()) {
+                    array_push($wsu, $row);
+                }
+                $smarty->assign('wsu', $wsu);
+                $smarty->display('umowyInfo.tpl');
+                break;
             }
-            $smarty->assign('wsu', $wsu);
-            $smarty->display('umowyInfo.tpl');
-            break;
         case 'du':
             $smarty->assign('dodum', "Wprowadź poprawne dane umowy");
             listaKlientow();
@@ -181,21 +188,28 @@ if (isset($_REQUEST['action'])) {
             $query->bind_param("s", $_REQUEST['dokument']);
             $query->execute();
             $result = $query->get_result();
-            $wsk = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($wsk, $row);
+            if ($result->num_rows == 0) {
+                listaKlientow();
+                $smarty->assign('blad', "Nie wybrano klienta");
+                $smarty->display('klienci.tpl');
+                break;
+            } else {
+                $wsk = array();
+                while ($row = $result->fetch_assoc()) {
+                    array_push($wsk, $row);
+                }
+                $smarty->assign('wsk', $wsk);
+                //zawarte umowy
+                $query = $db->prepare("SELECT * FROM umowy where klientID= ? ");
+                $query->bind_param("s", $_REQUEST['dokument']);
+                $query->execute();
+                $result = $query->get_result();
+                $zawarteUmowy = array();
+                while ($row = $result->fetch_assoc()) {
+                    array_push($zawarteUmowy, $row);
+                }
+                $smarty->assign('zawarteUmowy', $zawarteUmowy);
             }
-            $smarty->assign('wsk', $wsk);
-            //zawarte umowy
-            $query = $db->prepare("SELECT * FROM umowy where klientID= ? ");
-            $query->bind_param("s", $_REQUEST['dokument']);
-            $query->execute();
-            $result = $query->get_result();
-            $zawarteUmowy = array();
-            while ($row = $result->fetch_assoc()) {
-                array_push($zawarteUmowy, $row);
-            }
-            $smarty->assign('zawarteUmowy', $zawarteUmowy);
             //wybór klienta
             listaKlientow();
             $smarty->display('klientinfo.tpl');
